@@ -1,0 +1,86 @@
+#include <LiquidCrystal.h>
+
+// Define LCD pins: RS, E, D4, D5, D6, D7
+LiquidCrystal lcd(2, 3, 4, 5, 6, 7);  // Matches schematic: RS=2, E=3, D4-D7=4-7
+
+const int lm35Pin = A0;    // LM35 output to A0 (pin 23 on ATmega328P)
+const int buzzerPin = 6;   // Buzzer connected to PD6 (pin 12)
+float temperature;
+
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(buzzerPin, OUTPUT);
+  digitalWrite(buzzerPin, LOW);
+  Serial.begin(9600);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Vaccine Temp:");
+}
+
+void loop() {
+  int adcValue = analogRead(lm35Pin);
+  temperature = (adcValue * 5.0 / 1023.0) * 100.0;
+
+  // Display on LCD
+  lcd.setCursor(0, 1);
+  lcd.print(temperature, 1);
+  lcd.print((char)223);  // Degree symbol
+  lcd.print("C    ");
+
+  // Output to Virtual Terminal
+  Serial.print("Temperature ");
+  Serial.print(temperature, 1);
+  Serial.println(" °C");
+
+  // Buzzer alert if out of 2–8 °C range
+  if (temperature < 2 || temperature > 8) {
+    digitalWrite(buzzerPin, HIGH);
+  } else {
+    digitalWrite(buzzerPin, LOW);
+  }
+
+  delay(1000);
+}
+#include <LiquidCrystal.h>
+
+// Define LCD pins: RS, E, D4, D5, D6, D7
+LiquidCrystal lcd(2, 3, 4, 5, 6, 7);  // Matches schematic: RS=2, E=3, D4-D7=4-7
+
+const int lm35Pin = A0;    // LM35 output to A0 (pin 23 on ATmega328P)
+const int buzzerPin = 6;   // Buzzer connected to PD6 (pin 12)
+float temperature;
+
+void setup() {
+  lcd.begin(16, 2);
+  pinMode(buzzerPin, OUTPUT);
+  digitalWrite(buzzerPin, LOW);
+  Serial.begin(9600);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Vaccine Temp:");
+}
+
+void loop() {
+  int adcValue = analogRead(lm35Pin);
+  temperature = (adcValue * 5.0 / 1023.0) * 100.0;
+
+  // Display on LCD
+  lcd.setCursor(0, 1);
+  lcd.print(temperature, 1);
+  lcd.print((char)223);  // Degree symbol
+  lcd.print("C    ");
+
+  // Output to Virtual Terminal
+  Serial.print("Temperature ");
+  Serial.print(temperature, 1);
+  Serial.println(" °C");
+
+  // Buzzer alert if out of 2–8 °C range
+  if (temperature < 2 || temperature > 8) {
+    digitalWrite(buzzerPin, HIGH);
+  } else {
+    digitalWrite(buzzerPin, LOW);
+  }
+
+  delay(1000);
+}
